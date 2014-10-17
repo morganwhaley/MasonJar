@@ -1,0 +1,9 @@
+#masonJar {}
+
+.masonjar-container {
+    position: relative;
+}
+
+ul {
+    list-style-type: none;
+}

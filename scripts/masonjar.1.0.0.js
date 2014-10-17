@@ -130,6 +130,11 @@ MasonJar.prototype.processInstagramResult = function() {};
 MasonJar.prototype.normalizeInstagramResult = function() {};
 
 
+MasonJar.prototype.createFakeResult = function() {
+    
+};
+
+
 
 /*
 * ===========================================================================

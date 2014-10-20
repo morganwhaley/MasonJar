@@ -1,9 +1,98 @@
-#masonJar {}
-
-.masonjar-container {
-    position: relative;
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
 }
 
-ul {
-    list-style-type: none;
+
+#masonJar {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+}
+
+div.jar {
+    /*position: absolute;*/
+    height: 300px;
+    width: 300px;
+    cursor: pointer;
+}
+
+a.jar-link {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+div.has-image, div.no-image {
+    position: absolute;
+    height: 240px;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    padding: 30px;
+}
+
+div.has-image {
+    opacity: 1;
+}
+
+div.has-image.show {
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+div.overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    background-color: #26d798;
+}
+
+div.overlay.show {
+    opacity: 0.6;
+    transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+div.has-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+div.jar img {
+    width: 300px;
+    height: 300px;
+}
+
+div.jar h6 {
+    margin-bottom: 15px;
+}
+
+.posted-date {
+    font-size: 12px;
+    font-style: italic;
+}
+
+div.author {
+    position: absolute;
+    bottom: 30px;
+    font-style: italic;
+}
+
+div.social-icon {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    padding: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
 }

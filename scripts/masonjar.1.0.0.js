@@ -12,52 +12,57 @@ var Cannery = function() { };
 MasonJar.prototype.init = function() {
 
     this.rules = {
-            facebook: {
-                id: '',
-                icon: 'fa-facebook',
-                method: 'getFacebookFeed'
-            },
-            flickr: {
-                id: '',
-                icon: 'fa-flickr',
-                method: 'getFlickrFeed'
-            },
-            google: {
-                id: '',
-                icon: 'fa-google-plus',
-                method: 'getGPlusFeed'
-            },
-            instagram: {
-                id: '',
-                icon: 'fa-instagram',
-                redirectUrl: '',
-                method: 'getInstagramFeed'
-            },
-            pinterest: {
-                id: '',
-                icon: 'fa-pinterest',
-                method: 'getPinterestFeed'
-            },
-            rss: {
-                id: '',
-                icon: 'fa-rss',
-                method: 'getRSSFeed'
-            },
-            twitter: {
-                id: '',
-                icon: 'fa-twitter',
-                method: 'getTwitterFeed'
-            },
-            vimeo: {
-                id: '',
-                icon: 'fa-vimeo',
-                method: 'getVimeoFeed'
-            },
-            youtube: {
-                id: '',
-                icon: 'fa-youtube',
-                method: 'getYouTubeFeed'
-            }
+        facebook: {
+            id: '',
+            icon: 'fa-facebook',
+            method: 'getFacebookFeed'
+        },
+        flickr: {
+            id: '',
+            icon: 'fa-flickr',
+            method: 'getFlickrFeed'
+        },
+        google: {
+            id: '',
+            icon: 'fa-google-plus',
+            method: 'getGPlusFeed'
+        },
+        instagram: {
+            id: '',
+            icon: 'fa-instagram',
+            redirectUrl: '',
+            method: 'getInstagramFeed'
+        },
+        pinterest: {
+            id: '',
+            icon: 'fa-pinterest',
+            method: 'getPinterestFeed'
+        },
+        rss: {
+            id: '',
+            icon: 'fa-rss',
+            method: 'getRSSFeed'
+        },
+        twitter: {
+            id: '',
+            icon: 'fa-twitter',
+            method: 'getTwitterFeed'
+        },
+        vimeo: {
+            id: '',
+            icon: 'fa-vimeo',
+            method: 'getVimeoFeed'
+        },
+        youtube: {
+            id: '',
+            icon: 'fa-youtube',
+            method: 'getYouTubeFeed'
+        }
+    };
+
+    this.options = {
+        overlaycolor: '#26d798',
+        columns: 4
     };
 };
 

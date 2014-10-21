@@ -221,7 +221,7 @@ Cannery.prototype.setHeightsAndWidths = function(size, elements) {
 
 Cannery.prototype.buildIsotopeGrid = function() {
     $('#masonJar').isotope({
-        itemSelector: '',
+        itemSelector: '.jar',
         layoutMode: 'masonry'
     });
 };

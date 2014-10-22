@@ -39,7 +39,8 @@ div.has-image, div.no-image {
 }
 
 div.has-image {
-    opacity: 1;
+    opacity: 0;
+    color: #eeeeee;
 }
 
 div.has-image.show {
@@ -50,6 +51,10 @@ div.has-image.show {
     -o-transition: all 0.3s ease-in-out;
 }
 
+div.has-image .social-icon {
+    color: #000000;
+}
+
 div.overlay {
     position: absolute;
     height: 100%;
@@ -57,7 +62,7 @@ div.overlay {
     top: 0;
     left: 0;
     opacity: 0;
-    background-color: #26d798;
+    background-color: #0E304C;
 }
 
 div.overlay.show {

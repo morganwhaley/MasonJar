@@ -248,7 +248,6 @@ Cannery.prototype.buildContainer = function(item) {
         holder = '<div class="no-image holder">';
     }
     var listItem = '<div class="jar">' +
-        '<a class="jar-link" href="' + item.link +  '" target="_blank"></a>' +
         holder +
         '<h6>' + item.provider + '</h6>' +
         '<h2 class="jar-caption">' + caption + '</h2>' +
@@ -258,6 +257,7 @@ Cannery.prototype.buildContainer = function(item) {
         '<div class="overlay"></div>' +
         image +
         '<div class="social-icon"><i class="fa '+ item.icon + '"></i></div>' +
+        '<a class="jar-link" href="' + item.link +  '" target="_blank"></a>' +
         '</div>';
     $('#masonJar').append(listItem);
 };
@@ -285,16 +285,17 @@ Cannery.prototype.convertTime = function(datetime) {
 Cannery.prototype.setVisibility = function(event) {
     var $target = $(event.target);
     if ($target.hasClass('.holder') == false) {
-        $target = $target.closest('.holder');
+        $target = $target.siblings('.holder');
     }
+    console.log($target);
     $target.toggleClass('show');
     $target.next('.overlay').toggleClass('show');
 };
 
 
 Cannery.prototype.getLink = function(e) {
-    var $target = $(e.target);
-    console.log($target);
+    var link = $(e.target).closest('.jar').children('a').attr('href');
+    window.open(link,'_blank');
 };
 
 

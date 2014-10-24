@@ -14,34 +14,13 @@
             if (typeof redLabelGoods === 'undefined') {
                 redLabelGoods = {};
             }
-            redLabelGoods.options = { };
-
-            redLabelGoods.options.feeds = [];
-            redLabelGoods.options.settings = [];
-
-            redLabelGoods.options.feeds.push(
-                {
-                    name: 'twitter',
-                    id: 'supwhaley'
-                },
-                {
-                    name: 'facebook',
-                    id: '790567594333356'
-                },
-                {
-                    name: 'instagram',
-                    id: '1421700507'
+            redLabelGoods.options = {
+                feeds: {
+                    facebook: { id: '790567594333356' },
+                    twitter: { id: 'supwhaley' },
+                    instagram: { id: '1421700507' }
                 }
-            );
-
-            redLabelGoods.options.settings.push(
-                {
-                    overlayolor: '',
-                    columns: 5
-                }
-            );
-
-            //console.log(redLabelGoods + 'index');
+            };
         });
     </script>
 </head>

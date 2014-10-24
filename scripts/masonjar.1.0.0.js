@@ -77,6 +77,7 @@ MasonJar.prototype.get = function(request) {
     }
 
     this.setupInstagram(request, '1421700507.1fb234f.ed3aedfc81514fdd9d0a385a7ab80ddf');
+    this.setupTwitter();
 
 };
 
@@ -124,6 +125,11 @@ MasonJar.prototype.setupInstagram = function(obj, accessToken) {
 };
 
 
+MasonJar.prototype.setupTwitter = function() {
+    var url = '../MasonJar/twitter.php';
+    this.processTwitterResult(url);
+};
+
 
 MasonJar.prototype.processInstagramResult = function(url) {
     var context = this;
@@ -154,6 +160,42 @@ MasonJar.prototype.normalizeInstagramResult = function(result) {
     presentation.setupGridSizing();
     presentation.buildIsotopeGrid();
     presentation.bindEvents();
+};
+
+
+MasonJar.prototype.processTwitterResult = function(url) {
+    var context = this;
+    $.ajax({
+        url: url,
+        dataType: 'json'
+    }).done(function(result) {
+        context.normalizeTwitterResult(result);
+    })
+    .fail(function( jqxhr, textStatus, error ) {
+        var err = textStatus + ", " + error;
+        console.log( "Request Failed: " + err );
+    })
+    .always(function() {
+        console.log( "complete" );
+    });
+};
+
+
+MasonJar.prototype.normalizeTwitterResult = function() {
+    for (var prop in result) {
+        var index = result[prop];
+        console.log(index);
+        this.resultItem = {
+            visual: '',
+            caption: index.text,
+            icon: 'fa-twitter',
+            userOrHashtag: index.user.screen_name,
+            provider: 'twitter',
+            link: index.link,
+            datedatapoint: index.caption.created_time
+        };
+        //presentation.createGridItem(this.resultItem);
+    }
 };
 
 
@@ -287,9 +329,7 @@ Cannery.prototype.setVisibility = function(event) {
     if ($target.hasClass('.holder') == false) {
         $target = $target.siblings('.holder');
     }
-    console.log($target);
-    $target.toggleClass('show');
-    $target.next('.overlay').toggleClass('show');
+    $target.toggleClass('show').next('.overlay').toggleClass('show');
 };
 
 

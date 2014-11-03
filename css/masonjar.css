@@ -20,6 +20,7 @@ div.jar {
     height: 300px;
     width: 300px;
     cursor: pointer;
+    background-color: #e3e3e3;
 }
 
 a.jar-link {
@@ -64,11 +65,11 @@ div.overlay {
     top: 0;
     left: 0;
     opacity: 0;
-    background-color: #0E304C;
+    background-color: #fe504f;
 }
 
 div.overlay.show {
-    opacity: 0.6;
+    opacity: 0.8;
     transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
@@ -97,7 +98,7 @@ div.jar h6 {
 
 div.author {
     position: absolute;
-    bottom: 30px;
+    bottom: 10px;
     font-style: italic;
 }
 

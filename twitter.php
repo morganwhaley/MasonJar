@@ -2,12 +2,12 @@
 session_start();
 require_once("../MasonJar/twitteroauth-master/twitteroauth/twitteroauth.php");
 
-$twitteruser = "supwhaley";
+$twitteruser = "izze";
 $notweets = 15;
-$consumerkey = "oaHwOBkdI5KlszhdsIfwXuoOE";
-$consumersecret = "QWXCjidqZIxzwrKbqfdqxPPPI7yzYYG2iUoVvWahYxicZubHp8";
-$accesstoken = "247101479-mlnx7LITtXkpbctkXN2pv3cadVPsFRn3QwZHjBmc";
-$accesstokensecret = "qctYYfGT85XBfNS9ILXxXXAyiXh2x5H3SjmcUXZKyBD47";
+$consumerkey = "oO09pLRSGoQugAHBUv3KWWgYK";
+$consumersecret = "cKL2s26oAHYq6zZoOsOzEYcXaJqF6o5m6zZSx9CHDr9vY29hMo";
+$accesstoken = "22333986-gHg1U4AOoJkAZS7m9AXSdZUig1BIxy3WFhurgP9qN";
+$accesstokensecret = "srcL2TCb7ePOrMz5flcN6tGogtMrazLeCSM3SWw1uzehy";
 
 function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
   $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);

@@ -11,6 +11,8 @@ var Cannery = function() { };
 
 MasonJar.prototype.init = function() {
 
+    this.callCount = 0;
+
     // Can we have the user specify how many posts from each social media provider.
 
     this.feeds = {
@@ -120,85 +122,98 @@ MasonJar.prototype.setupInstagram = function(obj, accessToken) {
         }
     }
     //url += '?access_token=' + accessToken;
-    url = 'https://api.instagram.com/v1/users/1421700507/media/recent?access_token=' + accessToken;
-    this.processInstagramResult(url);
+    url = 'https://api.instagram.com/v1/users/846969065/media/recent?access_token=' + accessToken;
+    this.getFeed('Instagram', url);
+    return this;
 };
 
 
 MasonJar.prototype.setupTwitter = function() {
     var url = '../MasonJar/twitter.php';
-    this.processTwitterResult(url);
+    this.getFeed('Twitter', url);
+    return this;
 };
 
 
-MasonJar.prototype.processInstagramResult = function(url) {
+MasonJar.prototype.getFeed = function(call, url) {
     var context = this;
+    var data = call == 'Instagram' ? 'jsonp' : 'json';
     $.ajax({
         type: 'GET',
         url: url,
-        dataType: 'jsonp'
+        dataType: data
     }).done(function(result) {
         context.normalizeInstagramResult(result);
+        context.normalizeTwitterResult(result);
+        presentation.callGridBuilder();
+    }).fail(function( jqxhr, textStatus, error ) {
+        var err = textStatus + ", " + error;
+        console.log( "Request Failed: " + err );
+    }).always(function() {
+        //console.log( "complete" );
     });
+    return this;
 };
 
 
 MasonJar.prototype.normalizeInstagramResult = function(result) {
-    for (var prop in result.data) {
-        var index = result.data[prop];
-        this.resultItem = {
-            visual: index.images.standard_resolution.url,
-            caption: index.caption.text,
-            icon: 'fa-instagram',
-            userOrHashtag: index.user.username,
-            provider: 'instagram',
-            link: index.link,
-            datedatapoint: index.caption.created_time
-        };
-        presentation.createGridItem(this.resultItem);
-    }
-    presentation.setupGridSizing();
-    presentation.buildIsotopeGrid();
-    presentation.bindEvents();
-};
-
-
-MasonJar.prototype.processTwitterResult = function(url) {
     var context = this;
-    $.ajax({
-        url: url,
-        dataType: 'json'
-    }).done(function(result) {
-        context.normalizeTwitterResult(result);
-    })
-    .fail(function( jqxhr, textStatus, error ) {
-        var err = textStatus + ", " + error;
-        console.log( "Request Failed: " + err );
-    })
-    .always(function() {
-        console.log( "complete" );
-    });
+    var count = 11;
+    for (var i = 0; i < 5; i++) {
+        for (var prop in result.data) {
+            var index = result.data[prop];
+            var time = context.normalizeTime(index.caption.created_time);
+            var sortTime = index.caption.created_time;
+            this.resultItem = {
+                visual: index.images.standard_resolution.url,
+                caption: index.caption.text,
+                icon: 'fa-instagram',
+                userOrHashtag: index.user.username,
+                provider: 'instagram',
+                link: index.link,
+                time: time,
+                sortTime: sortTime
+            };
+            presentation.createGridItem(this.resultItem, count);
+            count = count + 2;
+        }
+    }
+    return this;
 };
 
 
-MasonJar.prototype.normalizeTwitterResult = function() {
+MasonJar.prototype.normalizeTwitterResult = function(result) {
+    var context = this;
+    var count = 10;
     for (var prop in result) {
         var index = result[prop];
-        console.log(index);
+        var unixTimestamp = Date.parse(index.created_at);
+        var time = context.normalizeTime(unixTimestamp);
+        var sortDate = unixTimestamp.toString().slice(0, -3);
         this.resultItem = {
             visual: '',
             caption: index.text,
             icon: 'fa-twitter',
             userOrHashtag: index.user.screen_name,
             provider: 'twitter',
-            link: index.link,
-            datedatapoint: index.caption.created_time
+            link: '',
+            time: time,
+            sortTime: sortDate
         };
-        //presentation.createGridItem(this.resultItem);
+        presentation.createGridItem(this.resultItem, count);
+        count = count + 2;
     }
+    return this;
 };
 
 
+MasonJar.prototype.normalizeTime = function(datetime) {
+    var today = new Date();
+    var date = new Date(datetime * 1000);
+    var hours = Math.round(Math.abs(today - date) / 36e5);
+    var daysAgo = Math.round(hours / 24) > 2 ? Math.round(hours / 24) + ' days ago' : 'yesterday';
+    return daysAgo;
+};
 
 
 
@@ -226,6 +241,13 @@ Cannery.prototype.bindEvents = function() {
     $(window).resize(function() { context.setupGridSizing(); });
     $('.jar').hover(function(e) { context.setVisibility(e); });
     $('#masonJar').on('click', '.jar', function(e) { context.getLink(e); });
+};
+
+
+Cannery.prototype.buildTheGrid = function() {
+    this.setupGridSizing();
+    this.buildIsotopeGrid();
+    this.bindEvents();
 };
 
 
@@ -267,21 +289,19 @@ Cannery.prototype.setHeightsAndWidths = function(size, elements) {
 Cannery.prototype.buildIsotopeGrid = function() {
     $('#masonJar').isotope({
         itemSelector: '.jar',
-        layoutMode: 'masonry'
+        layoutMode: 'masonry',
+        getSortData: {
+            sorter: '[data-count]'
+        },
+        sortBy: 'sorter'
     });
 };
 
 
-Cannery.prototype.createGridItem = function(resultItem) {
-    this.buildContainer(resultItem);
-};
-
-
-Cannery.prototype.buildContainer = function(item) {
+Cannery.prototype.createGridItem = function(item, count) {
     var image = '';
     var holder = '';
     var caption = this.limitCaptionLength(item.caption);
-    var time = this.convertTime(item.datedatapoint);
     if (item.visual) {
         image = '<img src="' + item.visual + '" />';
         holder = '<div class="has-image holder">';
@@ -289,12 +309,12 @@ Cannery.prototype.buildContainer = function(item) {
     else {
         holder = '<div class="no-image holder">';
     }
-    var listItem = '<div class="jar">' +
+    var listItem = '<div class="jar" data-sort-date="' + item.sortTime + '" data-count="' + count + '">' +
         holder +
         '<h6>' + item.provider + '</h6>' +
         '<h2 class="jar-caption">' + caption + '</h2>' +
         '<div class="author"><span>' + item.userOrHashtag + '</span></div>' +
-        '<span class="posted-date">' + time + '</data>' +
+        '<span class="posted-date">' + item.time + '</data>' +
         '</div>' +
         '<div class="overlay"></div>' +
         image +
@@ -302,6 +322,20 @@ Cannery.prototype.buildContainer = function(item) {
         '<a class="jar-link" href="' + item.link +  '" target="_blank"></a>' +
         '</div>';
     $('#masonJar').append(listItem);
+    return this;
+};
+
+// Call this only once. Loop through jars and execute when the last one is reached.
+Cannery.prototype.callGridBuilder = function() {
+    var jar = $('.jar');
+    var numberOfJars = jar.length;
+    //console.log(numberOfJars);
+    for (var i = 0; i <= numberOfJars; i++) {
+        if (i == numberOfJars) {
+            this.buildTheGrid();
+        }
+    }
+    return this;
 };
 
 

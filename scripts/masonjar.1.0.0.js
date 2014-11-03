@@ -159,24 +159,22 @@ MasonJar.prototype.getFeed = function(call, url) {
 MasonJar.prototype.normalizeInstagramResult = function(result) {
     var context = this;
     var count = 11;
-    for (var i = 0; i < 5; i++) {
-        for (var prop in result.data) {
-            var index = result.data[prop];
-            var time = context.normalizeTime(index.caption.created_time);
-            var sortTime = index.caption.created_time;
-            this.resultItem = {
-                visual: index.images.standard_resolution.url,
-                caption: index.caption.text,
-                icon: 'fa-instagram',
-                userOrHashtag: index.user.username,
-                provider: 'instagram',
-                link: index.link,
-                time: time,
-                sortTime: sortTime
-            };
-            presentation.createGridItem(this.resultItem, count);
-            count = count + 2;
-        }
+    for (var prop in result.data) {
+        var index = result.data[prop];
+        var time = context.normalizeTime(index.caption.created_time);
+        var sortTime = index.caption.created_time;
+        this.resultItem = {
+            visual: index.images.standard_resolution.url,
+            caption: index.caption.text,
+            icon: 'fa-instagram',
+            userOrHashtag: index.user.username,
+            provider: 'instagram',
+            link: index.link,
+            time: time,
+            sortTime: sortTime
+        };
+        presentation.createGridItem(this.resultItem, count);
+        count = count + 2;
     }
     return this;
 };
@@ -188,8 +186,8 @@ MasonJar.prototype.normalizeTwitterResult = function(result) {
     for (var prop in result) {
         var index = result[prop];
         var unixTimestamp = Date.parse(index.created_at);
-        var time = context.normalizeTime(unixTimestamp);
         var sortDate = unixTimestamp.toString().slice(0, -3);
+        var time = context.normalizeTime(sortDate);
         this.resultItem = {
             visual: '',
             caption: index.text,
@@ -208,6 +206,7 @@ MasonJar.prototype.normalizeTwitterResult = function(result) {
 
 
 MasonJar.prototype.normalizeTime = function(datetime) {
+    console.log(datetime);
     var today = new Date();
     var date = new Date(datetime * 1000);
     var hours = Math.round(Math.abs(today - date) / 36e5);

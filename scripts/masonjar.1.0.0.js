@@ -96,17 +96,17 @@ MasonJar.prototype.setRequestByRule = function(request) {
 };
 
 
-MasonJar.prototype.setupFacebook = function() {
-    /* make the API call */
-    FB.api(
-            '/' +  + '/posts',
-        function (response) {
-            if (response && !response.error) {
-                console.log(response);
-            }
-        }
-    );
-};
+//MasonJar.prototype.setupFacebook = function() {
+//    /* make the API call */
+//    FB.api(
+//            '/' +  + '/posts',
+//        function (response) {
+//            if (response && !response.error) {
+//                console.log(response);
+//            }
+//        }
+//    );
+//};
 
 
 MasonJar.prototype.setupInstagram = function(obj, accessToken) {
@@ -115,14 +115,14 @@ MasonJar.prototype.setupInstagram = function(obj, accessToken) {
     //url = 'https://api.instagram.com/v1/users/' + feedObj.id + '/media/recent';
     if(!accessToken) {
         if (location.hash) {
-            accessToken = location.hash.split('=')[1] ;
+            accessToken = location.hash.split('=')[1];
         }
         else {
             location.href='https://instagram.com/oauth/authorize/?client_id='+ feedObj.id +'&redirect_uri='+ redirect +'&response_type=token';
         }
     }
     //url += '?access_token=' + accessToken;
-    url = 'https://api.instagram.com/v1/users/846969065/media/recent?access_token=' + accessToken;
+    url = 'https://api.instagram.com/v1/users/846969065/media/recent?access_token=' + accessToken + '&count=7';
     this.getFeed('Instagram', url);
     return this;
 };
@@ -192,9 +192,9 @@ MasonJar.prototype.normalizeTwitterResult = function(result) {
             visual: '',
             caption: index.text,
             icon: 'fa-twitter',
-            userOrHashtag: index.user.screen_name,
+            userOrHashtag: '@' + index.user.screen_name,
             provider: 'twitter',
-            link: '',
+            link: 'https://twitter.com/izze/status/' + index.id_str,
             time: time,
             sortTime: sortDate
         };
@@ -328,7 +328,6 @@ Cannery.prototype.createGridItem = function(item, count) {
 Cannery.prototype.callGridBuilder = function() {
     var jar = $('.jar');
     var numberOfJars = jar.length;
-    //console.log(numberOfJars);
     for (var i = 0; i <= numberOfJars; i++) {
         if (i == numberOfJars) {
             this.buildTheGrid();
@@ -348,17 +347,10 @@ Cannery.prototype.limitCaptionLength = function(caption) {
 };
 
 
-Cannery.prototype.convertTime = function(datetime) {
-    var today = new Date();
-    var date = new Date(datetime * 1000);
-    var hours = Math.round(Math.abs(today - date) / 36e5);
-    var daysAgo = Math.round(hours / 24) > 2 ? Math.round(hours / 24) + ' days ago' : 'yesterday';
-    return daysAgo;
-};
-
-
 Cannery.prototype.setVisibility = function(event) {
     var $target = $(event.target);
+    $('.holder').removeClass('show');
+    $('.overlay').removeClass('show');
     if ($target.hasClass('.holder') == false) {
         $target = $target.siblings('.holder');
     }

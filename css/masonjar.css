@@ -10,12 +10,6 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px;
 }
 
-h2 {
-    font-weight: 400;
-    font-size: 1.3em;
-}
-
-
 #masonJar {
     font-family: Helvetica, Arial, Verdana, sans-serif;
 }
@@ -101,10 +95,17 @@ div.jar h6 {
     font-style: italic;
 }
 
+h2.jar-caption {
+    font-weight: 400;
+    font-size: 1.3em;
+    line-height: 1.3em;
+}
+
 div.author {
     position: absolute;
     bottom: 10px;
     font-style: italic;
+    text-transform: lowercase;
 }
 
 div.social-icon {

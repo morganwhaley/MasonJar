@@ -3,7 +3,7 @@ session_start();
 require_once("../MasonJar/twitteroauth-master/twitteroauth/twitteroauth.php");
 
 $twitteruser = "izze";
-$notweets = 15;
+$notweets = 8;
 $consumerkey = "oO09pLRSGoQugAHBUv3KWWgYK";
 $consumersecret = "cKL2s26oAHYq6zZoOsOzEYcXaJqF6o5m6zZSx9CHDr9vY29hMo";
 $accesstoken = "22333986-gHg1U4AOoJkAZS7m9AXSdZUig1BIxy3WFhurgP9qN";

@@ -122,7 +122,7 @@ MasonJar.prototype.setupInstagram = function(obj, accessToken) {
         }
     }
     //url += '?access_token=' + accessToken;
-    url = 'https://api.instagram.com/v1/users/846969065/media/recent?access_token=' + accessToken + '&count=7';
+    url = 'https://api.instagram.com/v1/users/1421700507/media/recent?access_token=' + accessToken + '&count=40';
     this.getFeed('Instagram', url);
     return this;
 };
@@ -143,16 +143,29 @@ MasonJar.prototype.getFeed = function(call, url) {
         url: url,
         dataType: data
     }).done(function(result) {
-        context.normalizeInstagramResult(result);
-        context.normalizeTwitterResult(result);
-        presentation.callGridBuilder();
     }).fail(function( jqxhr, textStatus, error ) {
-        var err = textStatus + ", " + error;
-        console.log( "Request Failed: " + err );
-    }).always(function() {
-        //console.log( "complete" );
+    }).always(function(a, textStatus, b) {
+        context.handleAjaxReturn(a, textStatus, b);
     });
     return this;
+};
+
+
+MasonJar.prototype.handleAjaxReturn = function(a, textStatus, b) {
+    if (textStatus == 'success') {
+        console.log("yay!");
+    }
+    else {
+        var err = textStatus + ", " + b;
+        console.log( "Request Failed: " + err );
+    }
+};
+
+
+MasonJar.prototype.handleAjaxSuccess = function(result) {
+    context.normalizeInstagramResult(result);
+    context.normalizeTwitterResult(result);
+    presentation.callGridBuilder();
 };
 
 
@@ -238,7 +251,7 @@ Cannery.prototype.init = function(options) {
 Cannery.prototype.bindEvents = function() {
     var context = this;
     $(window).resize(function() { context.setupGridSizing(); });
-    $('.jar').hover(function(e) { context.setVisibility(e); });
+    $('.jar').hover(function(e) { context.setVisibility(e); }, function() {context.removeOverlayVisibility();});
     $('#masonJar').on('click', '.jar', function(e) { context.getLink(e); });
 };
 
@@ -308,7 +321,7 @@ Cannery.prototype.createGridItem = function(item, count) {
     else {
         holder = '<div class="no-image holder">';
     }
-    var listItem = '<div class="jar" data-sort-date="' + item.sortTime + '" data-count="' + count + '">' +
+    var listItem = '<div class="jar" data-sort-date="' + item.sortTime + '" data-count="' + count + '" data-provider="' + item.provider + '">' +
         holder +
         '<h6>' + item.provider + '</h6>' +
         '<h2 class="jar-caption">' + caption + '</h2>' +
@@ -349,12 +362,19 @@ Cannery.prototype.limitCaptionLength = function(caption) {
 
 Cannery.prototype.setVisibility = function(event) {
     var $target = $(event.target);
-    $('.holder').removeClass('show');
-    $('.overlay').removeClass('show');
+    // Clear any visibilities before assigning to the target
+    this.removeOverlayVisibility();
+
     if ($target.hasClass('.holder') == false) {
         $target = $target.siblings('.holder');
     }
     $target.toggleClass('show').next('.overlay').toggleClass('show');
+};
+
+
+Cannery.prototype.removeOverlayVisibility = function() {
+    $('.holder').removeClass('show');
+    $('.overlay').removeClass('show');
 };
 
 

@@ -6,3 +6,10 @@ node_js:
 
 script:
   - echo "Hello World"
+
+env:
+  global:
+    - "FTP_USER=integer"
+    - "FTP_PASSWORD=TIGd!g!dev8"
+after_success:
+    "curl --ftp-create-dirs -T uploadfilename -u $FTP_USER:$FTP_PASSWORD ftp://174.143.45.110/web/content/morgan/MasonJar/"

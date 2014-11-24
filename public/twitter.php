@@ -2,12 +2,12 @@
 session_start();
 require_once("twitteroauth-master/twitteroauth/twitteroauth.php");
 
-$twitteruser = "izze";
+$twitteruser = "your_username";
 $notweets = 8;
-$consumerkey = "oO09pLRSGoQugAHBUv3KWWgYK";
-$consumersecret = "cKL2s26oAHYq6zZoOsOzEYcXaJqF6o5m6zZSx9CHDr9vY29hMo";
-$accesstoken = "22333986-gHg1U4AOoJkAZS7m9AXSdZUig1BIxy3WFhurgP9qN";
-$accesstokensecret = "srcL2TCb7ePOrMz5flcN6tGogtMrazLeCSM3SWw1uzehy";
+$consumerkey = "your_consumer_key";
+$consumersecret = "your_consumer_secret";
+$accesstoken = "your_access_token";
+$accesstokensecret = "your_access_token_secret";
 
 function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
   $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);

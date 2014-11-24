@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../MasonJar/twitteroauth-master/twitteroauth/twitteroauth.php");
+require_once("twitteroauth-master/twitteroauth/twitteroauth.php");
 
 $twitteruser = "izze";
 $notweets = 8;

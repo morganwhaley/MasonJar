@@ -75,7 +75,6 @@ MasonJar.prototype.get = function(request) {
 
     if (this.request.method) {
         var methodToCall = window['setup' + this.request.method]();
-        console.log(methodToCall);
     }
 
     this.setupInstagram(request, '1421700507.1fb234f.ed3aedfc81514fdd9d0a385a7ab80ddf');
@@ -121,19 +120,17 @@ MasonJar.prototype.setupInstagram = function(obj, accessToken) {
             location.href='https://instagram.com/oauth/authorize/?client_id='+ feedObj.id +'&redirect_uri='+ redirect +'&response_type=token';
         }
     }
-    //url += '?access_token=' + accessToken;
-    url = 'https://api.instagram.com/v1/users/1421700507/media/recent?access_token=' + accessToken + '&count=40';
+    url = 'https://api.instagram.com/v1/users/1421700507/media/recent?access_token=' + accessToken + '&count=7';
     this.getFeed('Instagram', url);
     return this;
 };
 
 
 MasonJar.prototype.setupTwitter = function() {
-    var url = '../MasonJar/twitter.php';
+    var url = '/twitter.php';
     this.getFeed('Twitter', url);
     return this;
 };
-
 
 MasonJar.prototype.getFeed = function(call, url) {
     var context = this;
@@ -144,16 +141,17 @@ MasonJar.prototype.getFeed = function(call, url) {
         dataType: data
     }).done(function(result) {
     }).fail(function( jqxhr, textStatus, error ) {
+        console.log(textStatus);
     }).always(function(a, textStatus, b) {
-        context.handleAjaxReturn(a, textStatus, b);
+        context.handleAjaxReturn(a, textStatus, b, call);
     });
     return this;
 };
 
 
-MasonJar.prototype.handleAjaxReturn = function(a, textStatus, b) {
+MasonJar.prototype.handleAjaxReturn = function(a, textStatus, b, provider) {
     if (textStatus == 'success') {
-        console.log("yay!");
+        this.handleAjaxSuccess(a, provider);
     }
     else {
         var err = textStatus + ", " + b;
@@ -162,14 +160,18 @@ MasonJar.prototype.handleAjaxReturn = function(a, textStatus, b) {
 };
 
 
-MasonJar.prototype.handleAjaxSuccess = function(result) {
-    context.normalizeInstagramResult(result);
-    context.normalizeTwitterResult(result);
+MasonJar.prototype.handleAjaxSuccess = function(result, provider) {
+    this.normalizeInstagramResult(result);
+    this.normalizeTwitterResult(result);
     presentation.callGridBuilder();
+    $('#masonJar').css('opacity', '1');
 };
 
 
 MasonJar.prototype.normalizeInstagramResult = function(result) {
+    if (!result) {
+        return;
+    }
     var context = this;
     var count = 11;
     for (var prop in result.data) {
@@ -194,6 +196,9 @@ MasonJar.prototype.normalizeInstagramResult = function(result) {
 
 
 MasonJar.prototype.normalizeTwitterResult = function(result) {
+    if (!result) {
+        return;
+    }
     var context = this;
     var count = 10;
     for (var prop in result) {
@@ -219,7 +224,6 @@ MasonJar.prototype.normalizeTwitterResult = function(result) {
 
 
 MasonJar.prototype.normalizeTime = function(datetime) {
-    console.log(datetime);
     var today = new Date();
     var date = new Date(datetime * 1000);
     var hours = Math.round(Math.abs(today - date) / 36e5);
@@ -306,6 +310,18 @@ Cannery.prototype.buildIsotopeGrid = function() {
             sorter: '[data-count]'
         },
         sortBy: 'sorter'
+    });
+    this.fadeInJars();
+};
+
+
+Cannery.prototype.fadeInJars = function() {
+    var delay = 0;
+    $('.jar').each(function() {
+        $(this).delay(delay).animate({
+            opacity: 1
+        }, 350);
+        delay += 350;
     });
 };
 
